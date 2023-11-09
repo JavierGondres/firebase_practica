@@ -5,12 +5,13 @@ import { Login } from '../Login';
 import { Dashboard } from '../Dashboard';
 import { RootStackParamList } from './types';
 import { Signup } from '../SignUp';
+import { navigationRef } from '../../navigationref/rootNavigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={Signup} />

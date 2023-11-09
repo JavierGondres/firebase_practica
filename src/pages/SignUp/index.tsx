@@ -2,8 +2,12 @@ import React from 'react';
 import {Text, TextInput, TouchableHighlight, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {styles} from './styles';
+import { RootStackParamList } from '../App/types';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export const Signup = () => {
+interface Props extends NativeStackScreenProps<RootStackParamList, 'Signup'> {}
+
+export const Signup = ({navigation}: Props) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -27,6 +31,9 @@ export const Signup = () => {
         </View>
         <TouchableHighlight style={styles.btn}>
           <Text style={styles.btnText}>Sign up</Text>
+        </TouchableHighlight>
+        <TouchableHighlight style={styles.btn} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.btnText}>Go to Login</Text>
         </TouchableHighlight>
       </View>
     </SafeAreaView>
