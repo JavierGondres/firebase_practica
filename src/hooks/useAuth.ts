@@ -1,15 +1,42 @@
-import React from 'react';
-
+import React, {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {navigate} from '../navigationref/rootNavigation';
 
+interface UserProps {
+  userId: string | null;
+  userName: string | null;
+  email: string | null;
+}
+
 export const useAuth = () => {
+  const [user, setUser] = useState<UserProps>();
+
+  useEffect(() => {
+    const checkUserAuthenticacion = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) 
+        setUser(JSON.parse(storedUser));
+    };
+
+    checkUserAuthenticacion();
+  }, []);
+
   const signIn = async (email: string, password: string) => {
     let errorText = '';
     try {
       const result = await auth().signInWithEmailAndPassword(email, password);
-      result;
+      const {uid, displayName, email: userEmail} = result.user;
+
+      const userData: UserProps = {
+        userId: uid,
+        email: userEmail,
+        userName: displayName,
+      };
+
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      setUser(userData);
       navigate('Dashbord');
     } catch (error: any) {
       switch (error.code) {
@@ -80,5 +107,17 @@ export const useAuth = () => {
     }
   };
 
-  return {signIn, signUp};
+  const signOut = async () => {
+    try {
+      await auth().signOut();
+      await AsyncStorage.removeItem('user');
+      setUser(undefined);
+      navigate('Login')
+    } catch (error) {
+      navigate('Login')
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  return {signIn, signUp, user, signOut};
 };

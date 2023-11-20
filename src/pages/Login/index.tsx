@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   TextInput,
@@ -17,7 +17,12 @@ interface Props extends NativeStackScreenProps<RootStackParamList, 'Login'> {}
 
 export const Login = ({navigation}: Props) => {
 
-  const {signIn} = useAuth();
+  const {signIn, user} = useAuth();
+
+  useEffect(() => {
+    if(user)
+      navigation.navigate('Dashbord');
+  }, [user])
 
   const [dataForm, setDataForm] = useState({
     email: '',
