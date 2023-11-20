@@ -29,7 +29,7 @@ export const Signup = ({navigation}: Props) => {
     const {age, email, name, password} = dataForm;
 
     try {
-      const error = await signUp(email, password, name, age);
+      const error = await signUp(email, password, age, name);
 
       if (error) console.log(error);
     } catch (error) {

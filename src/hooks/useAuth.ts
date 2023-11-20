@@ -74,7 +74,6 @@ export const useAuth = () => {
       );
       console.log('User account created & signed in!');
       const userData = {
-        userId: userCredential.user.uid,
         userEmail: userCredential.user.email,
         userName: userName,
         userAge: userAge,
